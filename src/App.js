@@ -61,7 +61,7 @@ const CustomAttachment = (props) => {
 const App = () => {
   const [chatClient, setChatClient] = useState(null);
   
-  const mutation = useMutation(() => request('http://localhost:4000/', createToken))
+  const mutation = useMutation(() => request('https://sles5aebb2.execute-api.af-south-1.amazonaws.com/dev/graphql', createToken))
   useEffect(() => {
     const initChat = async () => {
       const client = StreamChat.getInstance('92ev7u4spvvh');
