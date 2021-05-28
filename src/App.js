@@ -6,15 +6,24 @@ import { Chat, Channel, ChannelHeader, ChannelList, LoadingIndicator, MessageInp
 
 import 'stream-chat-react/dist/css/index.css';
 
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+const id = getRandomInt(1000).toString()
+
 const createToken = gql`
   mutation {
-    createPost(id: "Naa") {
+    createPost(id: ${id}) {
       token
     }
   }
 `
 
-const filters = { type: 'messaging', members: { $in: ['Naa'] } };
+
+
+const filters = { type: 'messaging', members: { $in: [id] } };
 const sort = { last_message_at: -1 };
 
 
@@ -22,7 +31,8 @@ const sort = { last_message_at: -1 };
 const App = () => {
   const [chatClient, setChatClient] = useState(null);
   
-  const mutation = useMutation(() => request('https://sles5aebb2.execute-api.af-south-1.amazonaws.com/dev/graphql', createToken))
+  // const mutation = useMutation(() => request('https://sles5aebb2.execute-api.af-south-1.amazonaws.com/dev/graphql', createToken))
+  const mutation = useMutation(() => request('http://localhost:4000', createToken))
   useEffect(() => {
     const initChat = async () => {
       const client = StreamChat.getInstance('92ev7u4spvvh');
@@ -30,8 +40,8 @@ const App = () => {
       console.log(createPost)
       await client.connectUser(
         {
-          id: 'Naa',
-          name: 'Naa',
+          id: id,
+          name: id,
           image: 'https://getstream.io/random_png/?id=odd-night-9&name=odd-night-9',
         },
         createPost.token
@@ -63,4 +73,3 @@ const App = () => {
 };
 
 export default App;
-
